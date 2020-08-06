@@ -1,7 +1,5 @@
 # Blender v2.83.2 OBJ File: 'wrench.blend'
 # www.blender.org
-mtllib wrench.mtl
-o model3.002
 v -5.356570 0.443905 -0.199632
 v -5.309590 0.362641 -0.199632
 v -5.325020 0.443905 -0.045842

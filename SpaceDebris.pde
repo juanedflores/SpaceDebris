@@ -4,6 +4,7 @@ PeasyCam cam;
 
 PShape s;
 Debris d;
+ArrayList<Debris> debrisL = new ArrayList<Debris>();
 
 int boundaryW;
 int boundaryH;
@@ -12,12 +13,15 @@ color backgroundcol = color(120);
 boolean stage = true;
 
 void setup() {
-  fullScreen(P3D);
+  // fullScreen(P3D);
+  size(500, 500, P3D);
 
-  // Add objects.
-  s = loadShape("wrench.obj");
-  d = new Debris(s, 0, 0);
-  
+  String datadir = "/Users/juaneduardoflores/Documents/Processing/Project_MASA/SpaceDebris/data";
+  File[] files = new File(datadir).listFiles();
+  loadObjs(files);
+
+  println(debrisL.size());
+
   // Peasy cam.
   cam = new PeasyCam(this, 400);
   cam.lookAt(width/2, height/2, 50);
@@ -32,9 +36,9 @@ void draw() {
   translate(width/2, height/2, 0);   
   lights();
 
-  drawStage();
+  // drawStage();
 
-  d.show();
+  // d.show();
 } 
 
 void drawStage() {
@@ -73,4 +77,26 @@ void keyPressed() {
         cam.lookAt(width/2, height/2, 39);
       }
     }
+}
+
+public void loadObjs(File[] files) {
+  for (File file: files) {
+    if (file.isDirectory()) {
+      loadObjs(file.listFiles());
+    } else {
+        String name = "";
+        String extension = "";
+        int i = file.getName().lastIndexOf('.');
+        if (i > 0) {
+          name = file.getName().substring(0, i);
+          extension = file.getName().substring(i+1);
+          if (extension.equals("obj")) {
+            PShape m = loadShape(name + ".obj");
+            println("loaded: " + name + ".obj");
+            Debris d = new Debris(m, 0, 0);
+            debrisL.add(d);
+          }
+        }
+    }
+  }
 }
